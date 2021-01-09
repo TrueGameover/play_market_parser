@@ -19,6 +19,7 @@ public class AppsCollector implements ListingLoader.AppsCollectingListener {
     private int processedCount;
     private boolean isPaused;
     private boolean isStopped;
+    private boolean useSelenium = false;
 
 
     public AppsCollector(List<String> queries, AppsCollectingListener appsCollectingListener) {
@@ -50,7 +51,7 @@ public class AppsCollector implements ListingLoader.AppsCollectingListener {
 
     private void createThreads() {
         for (String query : queries)
-            unprocessed.addLast(new ListingLoader(query, language, country, this));
+            unprocessed.addLast(new ListingLoader(query, language, country, this.useSelenium, this));
     }
 
     private synchronized void startNewLoaders() {
@@ -65,7 +66,7 @@ public class AppsCollector implements ListingLoader.AppsCollectingListener {
         threadsCount--;
         if (isStopped) return;
         if (isPaused) {
-            unprocessed.addFirst(new ListingLoader(query, language, country, this));
+            unprocessed.addFirst(new ListingLoader(query, language, country, this.useSelenium, this));
             return;
         }
         processedCount++;
@@ -77,6 +78,7 @@ public class AppsCollector implements ListingLoader.AppsCollectingListener {
 
     public interface AppsCollectingListener {
         void onQueryProcessed(List<FoundApp> foundApps, String query, boolean isSuccess);
+
         void onFinish();
     }
 
@@ -94,5 +96,9 @@ public class AppsCollector implements ListingLoader.AppsCollectingListener {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public void setUseSelenium(boolean useSelenium) {
+        this.useSelenium = useSelenium;
     }
 }

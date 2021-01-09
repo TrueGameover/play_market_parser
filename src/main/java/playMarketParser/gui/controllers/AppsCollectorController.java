@@ -32,36 +32,65 @@ import static playMarketParser.Global.showAlert;
 
 public class AppsCollectorController implements Initializable, AppsCollector.AppsCollectingListener {
 
-    @FXML private Button addBtn;
-    @FXML private Button importBtn;
-    @FXML private Button startBtn;
-    @FXML private Button exportBtn;
-    @FXML private Button clearBtn;
-    @FXML private Button stopBtn;
-    @FXML private Button pauseBtn;
-    @FXML private Button resumeBtn;
-    @FXML private Label queriesCntLbl;
-    @FXML private Label appsCntLbl;
-    @FXML private Label progLbl;
+    @FXML
+    private Button addBtn;
+    @FXML
+    private Button importBtn;
+    @FXML
+    private Button startBtn;
+    @FXML
+    private Button exportBtn;
+    @FXML
+    private Button clearBtn;
+    @FXML
+    private Button stopBtn;
+    @FXML
+    private Button pauseBtn;
+    @FXML
+    private Button resumeBtn;
+    @FXML
+    private Label queriesCntLbl;
+    @FXML
+    private Label appsCntLbl;
+    @FXML
+    private Label progLbl;
+    @FXML
+    private CheckBox useSelenium;
 
-    @FXML private ProgressBar progBar;
+    @FXML
+    private ProgressBar progBar;
 
-    @FXML private VBox rootPane;
+    @FXML
+    private VBox rootPane;
 
-    @FXML private TableView<String> inputTable;
-    @FXML private TableColumn<String, Integer> inRowNumCol;
-    @FXML private TableColumn<String, String> inputQueryCol;
-    @FXML private TableView<FoundApp> outputTable;
-    @FXML private TableColumn<FoundApp, Integer> outRowNumCol;
-    @FXML private TableColumn<FoundApp, String> appQueryCol;
-    @FXML private TableColumn<FoundApp, Integer> positionCol;
-    @FXML private TableColumn<FoundApp, String> urlCol;
-    @FXML private TableColumn<FoundApp, String> nameCol;
-    @FXML private TableColumn<FoundApp, String> shortDescrCol;
-    @FXML private TableColumn<FoundApp, String> iconUrlCol;
-    @FXML private TableColumn<FoundApp, Double> avgRateCol;
-    @FXML private TableColumn<FoundApp, String> devUrlCol;
-    @FXML private TableColumn<FoundApp, String> devNameCol;
+    @FXML
+    private TableView<String> inputTable;
+    @FXML
+    private TableColumn<String, Integer> inRowNumCol;
+    @FXML
+    private TableColumn<String, String> inputQueryCol;
+    @FXML
+    private TableView<FoundApp> outputTable;
+    @FXML
+    private TableColumn<FoundApp, Integer> outRowNumCol;
+    @FXML
+    private TableColumn<FoundApp, String> appQueryCol;
+    @FXML
+    private TableColumn<FoundApp, Integer> positionCol;
+    @FXML
+    private TableColumn<FoundApp, String> urlCol;
+    @FXML
+    private TableColumn<FoundApp, String> nameCol;
+    @FXML
+    private TableColumn<FoundApp, String> shortDescrCol;
+    @FXML
+    private TableColumn<FoundApp, String> iconUrlCol;
+    @FXML
+    private TableColumn<FoundApp, Double> avgRateCol;
+    @FXML
+    private TableColumn<FoundApp, String> devUrlCol;
+    @FXML
+    private TableColumn<FoundApp, String> devNameCol;
 
     private CheckBox titleFirstChb;
     private MenuItem removeItem;
@@ -174,11 +203,14 @@ public class AppsCollectorController implements Initializable, AppsCollector.App
             return;
         }
         outputTable.getItems().clear();
+        this.useSelenium.setDisable(true);
 
         appsCollector = new AppsCollector(queries, this);
         appsCollector.setMaxThreadsCount(Prefs.getInt("apps_threads_cnt"));
+        appsCollector.setUseSelenium(this.useSelenium.isSelected());
         if (!Prefs.getString("parsing_lang").equals("-")) appsCollector.setLanguage(Prefs.getString("parsing_lang"));
-        if (!Prefs.getString("parsing_country").equals("-")) appsCollector.setCountry(Prefs.getString("parsing_country"));
+        if (!Prefs.getString("parsing_country").equals("-"))
+            appsCollector.setCountry(Prefs.getString("parsing_country"));
 
         progBar.setProgress(0);
         Platform.runLater(() -> progLbl.setText(String.format("%.1f", 0f) + "%"));
@@ -357,6 +389,7 @@ public class AppsCollectorController implements Initializable, AppsCollector.App
         enableCompleteMode();
         Global.log(rb.getString("appsColComplete"));
         progBar.setProgress(appsCollector.getProgress());
+        this.useSelenium.setDisable(false);
         Platform.runLater(() -> progLbl.setText(String.format("%.1f", appsCollector.getProgress() * 100) + "%"));
     }
 

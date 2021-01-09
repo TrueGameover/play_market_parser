@@ -23,4 +23,5 @@ dependencies {
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
     implementation group: 'com.github.cliftonlabs', name: 'json-simple', version: '3.1.0'
     implementation group: 'org.controlsfx', name: 'controlsfx', version: '11.0.3'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
 }
